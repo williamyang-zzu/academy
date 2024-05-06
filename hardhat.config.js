@@ -31,20 +31,67 @@ console.log('ETHERSCAN_API_KEY', ETHERSCAN_API_KEY);
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
-  solidity: "0.8.24",
+  solidity: {
+    version: "0.8.23", // 配置自己项目使用的solidity version
+    settings: {
+      // 这部分按需配置
+      optimizer:{
+        enabled: true,
+        runs: 200,
+      }
+    }
+  },
+  //solidity: "0.8.24",
   networks: {
     sepolia: {
       url: `https://sepolia.infura.io/v3/${INFURA_API_KEY}`,
       accounts: [SEPOLIA_PRIVATE_KEY],
     },
+    bitlayertestnet: {
+      url: 'https://testnet-rpc.bitlayer.org',
+      chainId: 200810,
+      accounts: [SEPOLIA_PRIVATE_KEY]
+    },
+    bitlayer: {
+      url: 'https://mainnet-rpc.bitlayer.org',
+      chainId: 200901,
+      accounts: [SEPOLIA_PRIVATE_KEY]
+    },
   },
   // ...rest of the config...
   etherscan: {
-    apiKey: ETHERSCAN_API_KEY,
+    //apiKey: ETHERSCAN_API_KEY,
+    apiKey: {
+      sepolia: ETHERSCAN_API_KEY,
+      // api key需要写一个，hardhat-verify插件会要求写，不写的话校验不过去
+      // 当前浏览器还没开启api key的校验，可以先随意写一个字符串
+      bitlayertestnet: "1234",
+      bitlayer: "1234"
+    },
+    customChains: [
+      {
+        network: "bitlayertestnet",
+        chainId: 200810,
+        urls: {
+          // apiURL: "https://dev-blockser-gateway-api.bitlayerapps.org/api",
+          // browserURL: "https://dev-blockser-gateway-api.bitlayerapps.org/"
+          apiURL: "https://api-testnet.btrscan.com/scan/api",
+          browserURL: "https://testnet.btrscan.com/"
+        }
+      },
+      {
+        network: "bitlayer",
+        chainId: 200901,
+        urls: {
+          apiURL: "https://api.btrscan.com/scan/api",
+          browserURL: "https://www.btrscan.com/"
+        }
+      }
+    ]
   },
   sourcify: {
     // Disabled by default
     // Doesn't need an API key
-    enabled: true
+    enabled: false
   }
 };
