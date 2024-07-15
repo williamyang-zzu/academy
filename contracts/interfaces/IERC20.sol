@@ -16,7 +16,7 @@ interface IERC20 {
     /**
      * @dev 返回代币总供给.
      */
-    function totalSuply() external view returns (uint256);
+    function totalSupply() external view returns (uint256);
     /**
      * @dev 返回账户`account`所持有的代币数.
      */
@@ -50,5 +50,5 @@ interface IERC20 {
      *
      * 释放 {Transfer} 事件.
      */
-    function transferFrom(address from, address to, uint amount) returns (bool);
+    function transferFrom(address from, address to, uint amount) external returns (bool);
 }
